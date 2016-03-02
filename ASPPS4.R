@@ -63,3 +63,23 @@ elect_table$`Turnout (%)` <- as.numeric(gsub("%", "", as.character(elect_table$`
 
 # The Margin of Popular Vote column is too messy to deal with, so it will not be used
 
+## Visualizing Data ##
+
+# First Plot: Voter Turnout over time, with party
+# Sort data by year
+byyear <- elect_table[order(elect_table$Year),]
+partywinner <- as.factor(byyear$`Winner Party`)
+plot1 <- plot(byyear$Year, byyear$`Turnout (%)`, type = "p", 
+              pch=19, cex=.5, col=partywinner, 
+              xlab = "Year", ylab = "Voter Turnout (%)", 
+              xlim=c(min(byyear$Year), max(byyear$Year)),
+              ylim=c(min(byyear$`Turnout (%)`), max(byyear$`Turnout (%)`)))
+palette(c("purple", "blue", "red", "black"))
+title("Winning Party and Voter Turnout Over Time")
+text(1855, 30, "Democratic Republican", cex = .6, col = "purple")
+text(1840, 52, "Democrat", cex = .75, col = "blue")
+text(1925, 45, "Republican", cex = .75, col = "red")
+text(1832, 75, "Whig", cex = .75, col = "black")
+# Second Plot: Candidate with most of popular vote winning over time
+
+dev.off()  
