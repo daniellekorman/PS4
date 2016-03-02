@@ -69,17 +69,29 @@ elect_table$`Turnout (%)` <- as.numeric(gsub("%", "", as.character(elect_table$`
 # Sort data by year
 byyear <- elect_table[order(elect_table$Year),]
 partywinner <- as.factor(byyear$`Winner Party`)
-plot1 <- plot(byyear$Year, byyear$`Turnout (%)`, type = "p", 
-              pch=19, cex=.5, col=partywinner, 
+plot1 <- plot(byyear$Year, byyear$`Turnout (%)`, type = "l", 
+              col="gray",
               xlab = "Year", ylab = "Voter Turnout (%)", 
               xlim=c(min(byyear$Year), max(byyear$Year)),
               ylim=c(min(byyear$`Turnout (%)`), max(byyear$`Turnout (%)`)))
+points(byyear$Year, byyear$`Turnout (%)`, col=partywinner, pch=19, cex=.6)
 palette(c("purple", "blue", "red", "black"))
 title("Winning Party and Voter Turnout Over Time")
 text(1855, 30, "Democratic Republican", cex = .6, col = "purple")
 text(1840, 52, "Democrat", cex = .75, col = "blue")
 text(1925, 45, "Republican", cex = .75, col = "red")
-text(1832, 75, "Whig", cex = .75, col = "black")
+text(1830, 79, "Whig", cex = .75, col = "black")
+abline(lm(byyear$`Turnout (%)`~byyear$Year))
 # Second Plot: Candidate with most of popular vote winning over time
+byturnout <- elect_table[order(elect_table$`Turnout (%)`),]
+plot2 <- plot(byturnout$`Turnout (%)`, byturnout$`Margin of Popular Vote (%)`, type = "l",
+              xlim=c(48,82), ylim=c(-3, 27),
+              xlab="Turnout (%)", ylab="Winners' Margin of Popular Vote (%)", 
+              main="The Effect of Voter Turnout on Margin of Winning Popular Vote")
+abline(h=0, col="blue", lty=2)
+abline(lm(byturnout$`Margin of Popular Vote (%)`~byturnout$`Turnout (%)`), col="dark green")
 
-dev.off()  
+
+
+lost <- byturnout["Margin of Popular Vote(%)" < 0]
+points(byturnout$`Turnout (%)`, byturnout$`Margin of Popular Vote (%)`[`Margin of Popular Vote (%)`<0])
