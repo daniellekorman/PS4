@@ -64,8 +64,10 @@ elect_table$`Turnout (%)` <- as.numeric(gsub("%", "", as.character(elect_table$`
 # The Margin of Popular Vote column is too messy to deal with, so it will not be used
 
 ## Visualizing Data ##
-# Set up parameters so 2 plots can be in the device vertically
-# Reduce some margins so that the plots can be bigger
+# Export to pdf
+  pdf("PS_4_plot")
+  # Set up parameters so 2 plots can be in the device vertically
+  # Reduce some margins so that the plots can be bigger
 elect_plots <- par(mfrow = c(2,1), mai=c(.5, .9, .25, .25))
 
 # First Plot: Voter Turnout over time, with party
@@ -81,22 +83,20 @@ plot1 <- plot(byyear$Year, byyear$`Turnout (%)`, type = "l",
 points(byyear$Year, byyear$`Turnout (%)`, col=partywinner, pch=19, cex=.6)
 palette(c("purple", "blue", "red", "black"))
 title("Winning Party and Voter Turnout Over Time")
-text(1841, 28, "Democratic Republican", cex = .6, col = "purple")
+text(1843, 28, "Democratic Republican", cex = .6, col = "purple")
 text(1840, 52, "Democrat", cex = .75, col = "blue")
 text(1925, 45, "Republican", cex = .75, col = "red")
-text(1834, 79, "Whig", cex = .75, col = "black")
+text(1833, 79, "Whig", cex = .75, col = "black")
 abline(lm(byyear$`Turnout (%)`~byyear$Year))
 text(1875, 63, "Best Fit Line", cex=.85)
 
 # Second Plot: Winners' margins of popular vote (%) over time
-# Did not include John Quincy Adams because he was an anomaly and including his 
-# point would have made the rest of the graph difficult to see
 plot2 <- plot(byyear$Year, byyear$`Margin of Popular Vote (%)`, type = "l",
               xlab="Year", ylab="Winners' Margin of Popular Vote (%)", 
               main="Winners' Margin of Popular Vote Over Time")
 abline(h=0, col="blue", lty=2)
 abline(lm(byyear$`Margin of Popular Vote (%)`~ byyear$Year), col="dark green")
 text(1925, -2, "Below line = lost popular vote", cex=.75, col="blue")
-text(1883, 10, "Best Fit Line", cex=.75, col="dark green")
-
-# Export plots to pdf
+text(1886, 10, "Best Fit Line", cex=.75, col="dark green")
+# Stop export
+dev.off()
